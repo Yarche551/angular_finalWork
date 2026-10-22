@@ -1,0 +1,77 @@
+<header class="header">
+  <div class="container header-inner">
+    <app-logo />
+
+    <nav class="menu" [class.open]="mobileMenuOpen()" aria-label="Основное меню">
+      <ul class="menu-list">
+        @for (item of menu; track item.title) {
+          <li>
+            @if (item.fragment) {
+              <a
+                class="menu-link"
+                [routerLink]="item.link"
+                [fragment]="item.fragment"
+                (click)="closeAll()"
+              >{{ item.title }}</a>
+            } @else {
+              <a
+                class="menu-link"
+                [routerLink]="item.link"
+                routerLinkActive="active"
+                ariaCurrentWhenActive="page"
+                (click)="closeAll()"
+              >{{ item.title }}</a>
+            }
+          </li>
+        }
+      </ul>
+      <a class="phone phone-mobile" [href]="contacts.phoneHref">{{ contacts.phone }}</a>
+    </nav>
+
+    <a class="phone" [href]="contacts.phoneHref">{{ contacts.phone }}</a>
+
+    @if (authService.isLogged()) {
+      <div class="profile" (appClickOutside)="profileOpen.set(false)">
+        <button
+          type="button"
+          class="profile-button"
+          aria-haspopup="menu"
+          [attr.aria-expanded]="profileOpen()"
+          (click)="toggleProfile()"
+        >
+          <span class="icon-user"></span>
+          <span class="profile-name">
+            @if (authService.userName()) {
+              Привет, {{ authService.userName() }}!
+            } @else {
+              Привет!
+            }
+          </span>
+        </button>
+        @if (profileOpen()) {
+          <div class="profile-menu" role="menu">
+            <button type="button" class="profile-menu-item" role="menuitem" (click)="logout()">
+              Выйти
+            </button>
+          </div>
+        }
+      </div>
+    } @else {
+      <a class="profile-button" routerLink="/login">
+        <span class="icon-user"></span>
+        <span class="profile-name">Войти</span>
+      </a>
+    }
+
+    <button
+      type="button"
+      class="burger"
+      [class.open]="mobileMenuOpen()"
+      aria-label="Открыть меню"
+      [attr.aria-expanded]="mobileMenuOpen()"
+      (click)="mobileMenuOpen.set(!mobileMenuOpen())"
+    >
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>

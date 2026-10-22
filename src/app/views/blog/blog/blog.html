@@ -1,0 +1,72 @@
+<section class="container blog">
+  <h1 class="blog-title">Блог</h1>
+
+  <div class="toolbar">
+    <ul class="chips" aria-label="Выбранные категории">
+      @for (category of activeCategories(); track category.url) {
+        <li>
+          <button
+            type="button"
+            class="chip"
+            [attr.aria-label]="'Убрать категорию ' + category.name"
+            (click)="removeCategory(category.url)"
+          >
+            {{ category.name }}
+            <span class="icon-close"></span>
+          </button>
+        </li>
+      }
+    </ul>
+
+    <div class="filter" [class.open]="filterOpen()" (appClickOutside)="filterOpen.set(false)">
+      <button
+        type="button"
+        class="filter-head"
+        aria-haspopup="true"
+        [attr.aria-expanded]="filterOpen()"
+        (click)="filterOpen.set(!filterOpen())"
+      >
+        <span>Фильтр</span>
+        <span class="icon-arrow-down"></span>
+      </button>
+
+      @if (filterOpen()) {
+        <ul class="filter-list">
+          @for (category of categories(); track category.url) {
+            <li>
+              <button
+                type="button"
+                class="filter-item"
+                [class.active]="isActive(category.url)"
+                [attr.aria-pressed]="isActive(category.url)"
+                (click)="toggleCategory(category.url)"
+              >
+                <span>{{ category.name }}</span>
+                <span class="filter-sign" aria-hidden="true">{{ isActive(category.url) ? '−' : '+' }}</span>
+              </button>
+            </li>
+          }
+        </ul>
+      }
+    </div>
+  </div>
+
+  @if (loading() && !articles().length) {
+    <app-loader class="loader" />
+  } @else if (articles().length) {
+    <div class="articles" [class.updating]="loading()">
+      @for (article of articles(); track article.id) {
+        <app-article-card [article]="article" />
+      }
+    </div>
+  } @else {
+    <p class="empty">Статей по выбранным категориям пока нет.</p>
+  }
+
+  <app-pagination
+    class="pagination"
+    [current]="params().page"
+    [total]="pages()"
+    (pageChange)="openPage($event)"
+  />
+</section>

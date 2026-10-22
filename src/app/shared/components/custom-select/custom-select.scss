@@ -1,0 +1,81 @@
+@use 'variables' as *;
+
+.select {
+  position: relative;
+}
+
+.select-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  min-height: 53px;
+  padding: 0 20px;
+  border: 1.5px solid $blue;
+  border-radius: 3px;
+  background: $white;
+  font-size: 14px;
+  line-height: 1.3;
+  text-align: left;
+  color: $blue;
+  outline: none;
+
+  &.placeholder {
+    color: $placeholder;
+  }
+
+  &.invalid {
+    border-color: $error;
+  }
+
+  &:focus-visible {
+    box-shadow: 0 0 0 3px rgba($blue, 0.2);
+  }
+
+  .icon-arrow-down {
+    color: $blue-dark;
+    transition: transform 0.2s;
+  }
+}
+
+.open .icon-arrow-down {
+  transform: rotate(180deg);
+}
+
+.select-list {
+  position: absolute;
+  z-index: 5;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  margin: 0;
+  padding: 6px 0;
+  list-style: none;
+  border: 1.5px solid $blue-light;
+  border-radius: 5px;
+  background: $white;
+  box-shadow: 0 8px 24px rgba($blue-dark, 0.08);
+}
+
+.select-option {
+  display: block;
+  width: 100%;
+  padding: 10px 20px;
+  border: 0;
+  background: none;
+  font-size: 14px;
+  text-align: left;
+  color: $blue-dark;
+
+  &:hover,
+  &:focus-visible {
+    background: $blue-light;
+    outline: none;
+  }
+
+  &.selected {
+    color: $blue;
+    font-weight: 500;
+  }
+}

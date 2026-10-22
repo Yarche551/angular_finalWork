@@ -1,0 +1,108 @@
+<section class="container auth">
+  <form class="auth-form" [formGroup]="form" (ngSubmit)="signup()" novalidate>
+    <h1 class="auth-title">Регистрация на сайте</h1>
+
+    <div class="auth-fields">
+      <div class="form-field">
+        <label class="visually-hidden" for="signup-name">Ваше имя</label>
+        <input
+          id="signup-name"
+          class="input"
+          type="text"
+          formControlName="name"
+          placeholder="Ваше имя"
+          autocomplete="name"
+          [class.invalid]="isInvalid('name')"
+          [class.valid]="isValid('name')"
+        />
+        @if (isInvalid('name')) {
+          <span class="field-error">
+            @if (form.controls.name.errors?.['required']) {
+              Введите имя
+            } @else {
+              Только русские буквы и пробелы, каждое слово с заглавной буквы
+            }
+          </span>
+        }
+      </div>
+
+      <div class="form-field">
+        <label class="visually-hidden" for="signup-email">Электронная почта</label>
+        <input
+          id="signup-email"
+          class="input"
+          type="email"
+          formControlName="email"
+          placeholder="Электронная почта"
+          autocomplete="email"
+          [class.invalid]="isInvalid('email')"
+          [class.valid]="isValid('email')"
+        />
+        @if (isInvalid('email')) {
+          <span class="field-error">
+            @if (form.controls.email.errors?.['required']) {
+              Введите электронную почту
+            } @else {
+              Неверный формат электронной почты
+            }
+          </span>
+        }
+      </div>
+
+      <div class="form-field">
+        <label class="visually-hidden" for="signup-password">Пароль</label>
+        <div class="password">
+          <input
+            id="signup-password"
+            class="input"
+            [type]="showPassword() ? 'text' : 'password'"
+            formControlName="password"
+            placeholder="Пароль"
+            autocomplete="new-password"
+            [class.invalid]="isInvalid('password')"
+            [class.valid]="isValid('password')"
+          />
+          <app-password-toggle [(visible)]="showPassword" />
+        </div>
+        @if (isInvalid('password')) {
+          <span class="field-error">
+            @if (form.controls.password.errors?.['required']) {
+              Введите пароль
+            } @else {
+              Не менее 8 символов, минимум 1 заглавная буква и 1 цифра
+            }
+          </span>
+        }
+      </div>
+    </div>
+
+    <div class="form-field auth-checkbox">
+      <label class="checkbox" [class.invalid]="isInvalid('agree')">
+        <input type="checkbox" formControlName="agree" />
+        <span>
+          Я принимаю
+          <a routerLink="/policy" fragment="agreement" target="_blank">условия пользовательского соглашения</a>
+          и даю
+          <a routerLink="/policy" fragment="personal-data" target="_blank">согласие на обработку персональных данных</a>.
+        </span>
+      </label>
+      @if (isInvalid('agree')) {
+        <span class="field-error">Необходимо принять условия соглашения</span>
+      }
+    </div>
+
+    <button type="submit" class="button button-wide auth-submit" [disabled]="loading()">
+      Зарегистрироваться
+    </button>
+
+    @if (serverError()) {
+      <p class="form-error auth-server-error" role="alert">{{ serverError() }}</p>
+    }
+
+    <p class="auth-switch">
+      Уже есть аккаунт?<a routerLink="/login" [queryParams]="returnUrl === '/' ? null : { returnUrl }">Войдите</a>
+    </p>
+  </form>
+
+  <img class="auth-image" src="images/pages/signup.jpg" alt="" />
+</section>

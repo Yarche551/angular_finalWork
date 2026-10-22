@@ -1,0 +1,49 @@
+<article class="comment">
+  <header class="comment-header">
+    <img class="comment-avatar" src="images/avatar.svg" alt="" width="60" height="60" />
+    <div>
+      <div class="comment-author">{{ comment().user.name }}</div>
+      <time class="comment-date" [attr.datetime]="comment().date">
+        {{ comment().date | date: 'dd.MM.yyyy HH:mm' }}
+      </time>
+    </div>
+  </header>
+
+  <p class="comment-text">{{ comment().text }}</p>
+
+  <div class="comment-actions">
+    <button
+      type="button"
+      class="comment-action"
+      [class.active]="userAction() === 'like'"
+      [attr.aria-pressed]="userAction() === 'like'"
+      aria-label="Нравится"
+      title="Нравится"
+      (click)="action.emit('like')"
+    >
+      <span class="count">{{ comment().likesCount }}</span>
+      <span class="icon-like"></span>
+    </button>
+    <button
+      type="button"
+      class="comment-action"
+      [class.active]="userAction() === 'dislike'"
+      [attr.aria-pressed]="userAction() === 'dislike'"
+      aria-label="Не нравится"
+      title="Не нравится"
+      (click)="action.emit('dislike')"
+    >
+      <span class="count">{{ comment().dislikesCount }}</span>
+      <span class="icon-dislike"></span>
+    </button>
+    <button
+      type="button"
+      class="comment-action"
+      aria-label="Пожаловаться на комментарий"
+      title="Пожаловаться"
+      (click)="action.emit('violate')"
+    >
+      <span class="icon-violate"></span>
+    </button>
+  </div>
+</article>

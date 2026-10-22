@@ -1,0 +1,221 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.header {
+  position: relative;
+  z-index: 20;
+  background: $white;
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  height: 127px;
+}
+
+.menu {
+  margin-left: 100px;
+}
+
+.menu-list {
+  display: flex;
+  gap: 30px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.menu-link {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.3;
+  color: $blue-dark;
+  transition: color 0.2s;
+
+  &:hover,
+  &.active {
+    color: $blue;
+  }
+}
+
+.phone {
+  margin-left: auto;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.3;
+  color: $blue;
+  white-space: nowrap;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.phone-mobile {
+  display: none;
+}
+
+.profile {
+  position: relative;
+  margin-left: 89px;
+}
+
+.profile-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 0;
+  border: 0;
+  background: none;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.3;
+  color: $blue-dark;
+  white-space: nowrap;
+  transition: color 0.2s;
+
+  &:hover {
+    color: $blue;
+  }
+}
+
+a.profile-button {
+  margin-left: 141px;
+}
+
+.profile-menu {
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 0;
+  min-width: 160px;
+  padding: 6px 0;
+  border: 1.5px solid $blue-light;
+  border-radius: 5px;
+  background: $white;
+  box-shadow: 0 8px 24px rgba($blue-dark, 0.08);
+}
+
+.profile-menu-item {
+  display: block;
+  width: 100%;
+  padding: 10px 20px;
+  border: 0;
+  background: none;
+  font-size: 16px;
+  line-height: 1.3;
+  text-align: left;
+  color: $blue-dark;
+
+  &:hover,
+  &:focus-visible {
+    background: $blue-light;
+    outline: none;
+  }
+}
+
+.burger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 36px;
+  height: 36px;
+  margin-left: 20px;
+  padding: 6px;
+  border: 0;
+  background: none;
+
+  span {
+    display: block;
+    height: 2px;
+    border-radius: 1px;
+    background: $blue-dark;
+    transition:
+      transform 0.2s,
+      opacity 0.2s;
+  }
+
+  &.open {
+    span:nth-child(1) {
+      transform: translateY(7px) rotate(45deg);
+    }
+    span:nth-child(2) {
+      opacity: 0;
+    }
+    span:nth-child(3) {
+      transform: translateY(-7px) rotate(-45deg);
+    }
+  }
+}
+
+@include below($bp-xl) {
+  .menu {
+    margin-left: 60px;
+  }
+
+  .profile,
+  a.profile-button {
+    margin-left: 60px;
+  }
+}
+
+@include below($bp-lg) {
+  .header-inner {
+    height: 90px;
+  }
+
+  .burger {
+    display: flex;
+  }
+
+  .menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    display: none;
+    margin: 0;
+    padding: 20px;
+    border-top: 1px solid $blue-light;
+    background: $white;
+    box-shadow: 0 12px 24px rgba($blue-dark, 0.08);
+
+    &.open {
+      display: block;
+    }
+  }
+
+  .menu-list {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .profile,
+  a.profile-button {
+    margin-left: 30px;
+  }
+}
+
+@include below($bp-md) {
+  .header > .container > .phone {
+    display: none;
+  }
+
+  .phone-mobile {
+    display: inline-block;
+    margin-top: 20px;
+  }
+
+  .profile,
+  a.profile-button {
+    margin-left: auto;
+  }
+}
+
+@include below($bp-sm) {
+  .profile-name {
+    max-width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}

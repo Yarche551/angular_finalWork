@@ -1,0 +1,13 @@
+<article class="card">
+  <a class="card-image" [routerLink]="['/blog', article().url]" tabindex="-1" aria-hidden="true">
+    <img [src]="staticPath + article().image" [alt]="article().title" loading="lazy" />
+    <span class="card-tag">{{ article().category }}</span>
+  </a>
+  <div class="card-body">
+    <h3 class="card-title">
+      <a [routerLink]="['/blog', article().url]">{{ article().title }}</a>
+    </h3>
+    <p class="card-description">{{ article().description }}</p>
+  </div>
+  <a class="card-more" [routerLink]="['/blog', article().url]">Читать дальше</a>
+</article>

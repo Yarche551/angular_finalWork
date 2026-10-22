@@ -1,0 +1,98 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+// Общая разметка страниц входа и регистрации
+.auth {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+  padding-top: 120px;
+  padding-bottom: 92px;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 480px;
+
+  // в макете заголовок шире полей, сами поля — 422px
+  > *:not(.auth-title) {
+    max-width: 422px;
+  }
+}
+
+.auth-title {
+  @include title(36px);
+  margin-bottom: 40px;
+}
+
+.auth-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.auth-checkbox {
+  margin-top: 10px;
+}
+
+.auth-submit {
+  margin-top: 40px;
+}
+
+.auth-server-error {
+  margin-top: 10px;
+}
+
+.auth-switch {
+  margin-top: 10px;
+  font-size: 14px;
+  line-height: 1.3;
+  color: $text;
+
+  a {
+    margin-left: 4px;
+    color: $blue;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.auth-image {
+  flex: 0 1 607px;
+  width: 607px;
+  height: 390px;
+  min-width: 0;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.password {
+  position: relative;
+
+  .input {
+    padding-right: 52px;
+  }
+}
+
+@include below($bp-lg) {
+  .auth-image {
+    display: none;
+  }
+
+  .auth {
+    justify-content: center;
+    padding-top: 72px;
+    padding-bottom: 72px;
+  }
+}
+
+@include below($bp-md) {
+  .auth-title {
+    font-size: 28px;
+  }
+}

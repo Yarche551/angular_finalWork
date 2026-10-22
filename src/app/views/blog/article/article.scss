@@ -1,0 +1,279 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.page {
+  padding-top: 80px;
+  padding-bottom: 120px;
+}
+
+.page-loader {
+  padding: 120px 0;
+}
+
+// ---------- Хлебные крошки ----------
+.breadcrumbs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  line-height: 1.3;
+
+  a {
+    color: $blue-light;
+
+    &:hover {
+      color: $blue;
+    }
+  }
+}
+
+.breadcrumbs-sep {
+  font-size: 14px;
+  color: $blue-light;
+}
+
+.breadcrumbs-current {
+  font-weight: 500;
+  color: $blue;
+}
+
+// ---------- Шапка статьи ----------
+.article-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 40px;
+  margin-top: 60px;
+}
+
+.article-intro {
+  max-width: 607px;
+}
+
+.article-title {
+  @include section-title;
+}
+
+.article-description {
+  margin-top: 40px;
+  font-size: 20px;
+  line-height: 1.3;
+  color: $blue;
+}
+
+.article-image {
+  flex: 0 1 527px;
+  width: 527px;
+  height: 320px;
+  min-width: 0;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+// ---------- Текст и колонка «Читайте также» ----------
+.article-layout {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 60px;
+}
+
+.article-main {
+  flex: 1;
+  min-width: 0;
+  max-width: 854px;
+  margin-top: 60px;
+}
+
+.article-content {
+  max-width: 818px;
+}
+
+.related {
+  flex: 0 0 292px;
+  margin-top: 120px;
+}
+
+.related-title {
+  @include title(26px);
+}
+
+.related-list {
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+  margin-top: 20px;
+}
+
+// ---------- Поделиться ----------
+.share {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 20px;
+  margin-top: 40px;
+}
+
+.share-text {
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 1.3;
+  color: $blue;
+}
+
+.share-icons {
+  display: flex;
+  gap: 13px;
+}
+
+.share-link {
+  display: inline-flex;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: $blue;
+  transition: color 0.2s;
+
+  &:hover {
+    color: $blue-dark;
+  }
+
+  span {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+// ---------- Комментарии ----------
+.comments {
+  margin-top: 60px;
+}
+
+.comments-title {
+  @include section-title;
+}
+
+.comments-note {
+  margin-top: 20px;
+  font-size: 14px;
+  line-height: 1.3;
+  color: $blue-dark;
+}
+
+.comment-form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  max-width: 818px;
+  margin-top: 40px;
+}
+
+.comment-textarea {
+  min-height: 248px;
+}
+
+.comment-submit {
+  width: 100%;
+  max-width: 422px;
+  margin-top: 16px;
+}
+
+.comments-list {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  margin-top: 60px;
+}
+
+.more-comments {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 60px;
+  padding: 0;
+  border: 0;
+  background: none;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 1.3;
+  color: $blue;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.comments-loader {
+  justify-content: flex-start;
+  margin-top: 50px;
+}
+
+.not-found {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+  padding: 40px 0;
+  font-size: 16px;
+}
+
+@include below($bp-xl) {
+  .article-layout {
+    gap: 40px;
+  }
+
+  .related {
+    flex-basis: 260px;
+  }
+}
+
+@include below($bp-lg) {
+  .article-header {
+    flex-direction: column-reverse;
+  }
+
+  .article-image {
+    flex-basis: auto;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 527 / 320;
+  }
+
+  .article-layout {
+    flex-direction: column;
+  }
+
+  .article-main {
+    max-width: none;
+  }
+
+  .related {
+    flex-basis: auto;
+    width: 100%;
+    margin-top: 0;
+  }
+
+  .related-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+}
+
+@include below($bp-md) {
+  .page {
+    padding-top: 40px;
+    padding-bottom: 72px;
+  }
+
+  .article-description {
+    margin-top: 20px;
+    font-size: 18px;
+  }
+
+  .related-list {
+    grid-template-columns: 1fr;
+  }
+}

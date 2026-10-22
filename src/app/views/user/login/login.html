@@ -1,0 +1,67 @@
+<section class="container auth">
+  <form class="auth-form" [formGroup]="form" (ngSubmit)="login()" novalidate>
+    <h1 class="auth-title">Войти в личный кабинет</h1>
+
+    <div class="auth-fields">
+      <div class="form-field">
+        <label class="visually-hidden" for="login-email">Электронная почта</label>
+        <input
+          id="login-email"
+          class="input"
+          type="email"
+          formControlName="email"
+          placeholder="Электронная почта"
+          autocomplete="email"
+          [class.invalid]="isInvalid('email')"
+          [class.valid]="isValid('email')"
+        />
+        @if (isInvalid('email')) {
+          <span class="field-error">
+            @if (form.controls.email.errors?.['required']) {
+              Введите электронную почту
+            } @else {
+              Неверный формат электронной почты
+            }
+          </span>
+        }
+      </div>
+
+      <div class="form-field">
+        <label class="visually-hidden" for="login-password">Пароль</label>
+        <div class="password">
+          <input
+            id="login-password"
+            class="input"
+            [type]="showPassword() ? 'text' : 'password'"
+            formControlName="password"
+            placeholder="Пароль"
+            autocomplete="current-password"
+            [class.invalid]="isInvalid('password')"
+            [class.valid]="isValid('password')"
+          />
+          <app-password-toggle [(visible)]="showPassword" />
+        </div>
+        @if (isInvalid('password')) {
+          <span class="field-error">Введите пароль</span>
+        }
+      </div>
+    </div>
+
+    <label class="checkbox auth-checkbox">
+      <input type="checkbox" formControlName="rememberMe" />
+      <span>Запомнить меня</span>
+    </label>
+
+    <button type="submit" class="button button-wide auth-submit" [disabled]="loading()">Войти</button>
+
+    @if (serverError()) {
+      <p class="form-error auth-server-error" role="alert">{{ serverError() }}</p>
+    }
+
+    <p class="auth-switch">
+      Нет аккаунта?<a routerLink="/signup" [queryParams]="returnUrl === '/' ? null : { returnUrl }">Пройдите регистрацию</a>
+    </p>
+  </form>
+
+  <img class="auth-image" src="images/pages/login.jpg" alt="" />
+</section>

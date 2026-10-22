@@ -1,0 +1,73 @@
+@use 'variables' as *;
+
+.comment-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 26px;
+}
+
+.comment-avatar {
+  flex-shrink: 0;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+}
+
+.comment-author {
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 1.3;
+  color: $blue;
+}
+
+.comment-date {
+  display: block;
+  margin-top: 10px;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 1.3;
+  color: $gray;
+}
+
+.comment-text {
+  margin-top: 15px;
+  font-size: 14px;
+  line-height: 1.4;
+  color: $blue-dark;
+  white-space: pre-line;
+  overflow-wrap: break-word;
+}
+
+.comment-actions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-top: 39px;
+}
+
+.comment-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 0;
+  border: 0;
+  background: none;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 1.4;
+  color: $blue-dark;
+  transition: color 0.2s;
+
+  &:hover {
+    color: $blue-hover;
+  }
+
+  &.active {
+    color: $blue;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $blue;
+    outline-offset: 2px;
+  }
+}

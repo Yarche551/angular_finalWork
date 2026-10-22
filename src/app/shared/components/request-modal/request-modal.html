@@ -1,0 +1,106 @@
+@if (state(); as modal) {
+  <div class="overlay" (click)="close()" aria-hidden="true"></div>
+  <div
+    class="modal"
+    role="dialog"
+    aria-modal="true"
+    [attr.aria-labelledby]="'request-modal-title'"
+  >
+    <button type="button" class="close" aria-label="Закрыть" (click)="close()">
+      <span class="icon-close"></span>
+    </button>
+
+    @if (success()) {
+      <div class="thanks">
+        <h2 class="title" id="request-modal-title">Спасибо за вашу заявку!</h2>
+        <p class="thanks-text">Мы свяжемся с вами при первой же возможности.</p>
+        <button type="button" class="button button-small" (click)="close()">Окей</button>
+      </div>
+    } @else {
+      <form class="form" [formGroup]="form" (ngSubmit)="submit()" novalidate>
+        <h2 class="title" id="request-modal-title">
+          @if (isOrder()) {
+            Заявка на услугу
+          } @else {
+            Закажите бесплатную<br />консультацию!
+          }
+        </h2>
+
+        <div class="fields">
+          @if (isOrder()) {
+            <div class="form-field">
+              <app-custom-select
+                formControlName="service"
+                [options]="serviceOptions"
+                [invalid]="isInvalid('service')"
+              />
+              @if (isInvalid('service')) {
+                <span class="field-error">Выберите услугу</span>
+              }
+            </div>
+          }
+
+          <div class="form-field">
+            <label class="visually-hidden" for="request-name">Ваше имя</label>
+            <input
+              id="request-name"
+              class="input"
+              type="text"
+              formControlName="name"
+              placeholder="Ваше имя"
+              autocomplete="name"
+              [class.invalid]="isInvalid('name')"
+            />
+            @if (isInvalid('name')) {
+              <span class="field-error">
+                @if (form.controls.name.errors?.['required']) {
+                  Введите имя
+                } @else if (form.controls.name.errors?.['minlength']) {
+                  Имя должно содержать минимум 2 буквы
+                } @else {
+                  Имя может содержать только буквы, пробелы и дефис
+                }
+              </span>
+            }
+          </div>
+
+          <div class="form-field">
+            <label class="visually-hidden" for="request-phone">Ваш номер телефона</label>
+            <input
+              id="request-phone"
+              class="input"
+              type="tel"
+              formControlName="phone"
+              placeholder="Ваш номер телефона"
+              autocomplete="tel"
+              mask="(000) 000-00-00"
+              prefix="+7 "
+              [class.invalid]="isInvalid('phone')"
+            />
+            @if (isInvalid('phone')) {
+              <span class="field-error">
+                @if (form.controls.phone.errors?.['required']) {
+                  Введите номер телефона
+                } @else {
+                  Введите номер полностью: +7 (999) 999-99-99
+                }
+              </span>
+            }
+          </div>
+        </div>
+
+        <button type="submit" class="button button-wide submit" [disabled]="sending()">
+          @if (isOrder()) {
+            Оставить заявку
+          } @else {
+            Заказать консультацию
+          }
+        </button>
+
+        @if (serverError()) {
+          <p class="form-error" role="alert">Ошибка при отправке формы. Попробуйте еще раз</p>
+        }
+      </form>
+    }
+  </div>
+}

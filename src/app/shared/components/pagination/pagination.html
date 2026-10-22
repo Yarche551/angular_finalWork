@@ -1,0 +1,40 @@
+@if (total() > 1) {
+  <nav class="pagination" aria-label="Страницы">
+    <button
+      type="button"
+      class="arrow prev"
+      aria-label="Предыдущая страница"
+      [disabled]="current() <= 1"
+      (click)="go(current() - 1)"
+    ></button>
+
+    <ul class="pages">
+      @for (page of pages(); track $index) {
+        <li>
+          @if (page === 'gap') {
+            <span class="gap" aria-hidden="true">…</span>
+          } @else {
+            <button
+              type="button"
+              class="page"
+              [class.active]="page === current()"
+              [attr.aria-current]="page === current() ? 'page' : null"
+              [attr.aria-label]="'Страница ' + page"
+              (click)="go(page)"
+            >
+              {{ page }}
+            </button>
+          }
+        </li>
+      }
+    </ul>
+
+    <button
+      type="button"
+      class="arrow next"
+      aria-label="Следующая страница"
+      [disabled]="current() >= total()"
+      (click)="go(current() + 1)"
+    ></button>
+  </nav>
+}

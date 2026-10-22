@@ -1,0 +1,179 @@
+<!-- Слайдер акций -->
+<section class="banner container" aria-roledescription="carousel" aria-label="Акции и новости">
+  <div class="banner-viewport" (mouseenter)="pauseBanner(true)" (mouseleave)="pauseBanner(false)">
+    <div class="banner-track" [style.transform]="'translateX(' + bannerIndex() * -100 + '%)'">
+      @for (slide of banners; track $index) {
+        <div
+          class="slide"
+          role="group"
+          aria-roledescription="slide"
+          [attr.aria-label]="$index + 1 + ' из ' + banners.length"
+          [attr.aria-hidden]="$index !== bannerIndex()"
+        >
+          <div class="slide-image" [style.background-image]="'url(' + slide.image + ')'"></div>
+          <div class="slide-circle"></div>
+          <div class="slide-content">
+            <div class="slide-label">{{ slide.label }}</div>
+            <h2 class="slide-title">@for (part of slide.title; track $index) {<span [class.accent]="part.accent">{{ part.text }}</span>}</h2>
+            @if (slide.description) {
+              <p class="slide-description">{{ slide.description }}</p>
+            }
+            <button
+              type="button"
+              class="button slide-button"
+              [attr.tabindex]="$index === bannerIndex() ? null : -1"
+              (click)="orderService(slide.service)"
+            >
+              Подробнее
+            </button>
+          </div>
+        </div>
+      }
+    </div>
+
+    <button type="button" class="banner-arrow prev" aria-label="Предыдущий слайд" (click)="prevBanner()"></button>
+    <button type="button" class="banner-arrow next" aria-label="Следующий слайд" (click)="nextBanner()"></button>
+
+    <div class="banner-dots">
+      @for (slide of banners; track $index) {
+        <button
+          type="button"
+          class="banner-dot"
+          [class.active]="$index === bannerIndex()"
+          [attr.aria-label]="'Слайд ' + ($index + 1)"
+          [attr.aria-current]="$index === bannerIndex()"
+          (click)="bannerIndex.set($index)"
+        ></button>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- Услуги -->
+<section class="section container" id="services">
+  <h2 class="section-title">Услуги, которые мы предлагаем</h2>
+  <div class="services">
+    @for (service of services; track service.title) {
+      <article class="service">
+        <img class="service-image" [src]="service.image" [alt]="service.title" loading="lazy" />
+        <h3 class="service-title">{{ service.title }}</h3>
+        <p class="service-description">{{ service.description }}</p>
+        <div class="service-footer">
+          <span class="service-price">От {{ service.price | number: '1.0-0' : 'ru' }}₽</span>
+          <button type="button" class="button" (click)="orderService(service.title)">Подробнее</button>
+        </div>
+      </article>
+    }
+  </div>
+</section>
+
+<!-- О нас -->
+<section class="section container about" id="about">
+  <img class="about-image" src="images/pages/about.jpg" alt="Команда АйтиШторм за работой" loading="lazy" />
+  <div class="about-content">
+    <h2 class="section-title">Кто мы и чем мы занимаемся?</h2>
+    <p class="about-text">
+      <b>АйтиШторм</b> — это ваш помощник №1 при решении таких вопросов, как продвижение в сети,
+      разработка сайтов для бизнеса и личного бренда, сторисмейкинг, копирайтинг, маркетинг,
+      разработка визуальной концепции и создание инфопродуктов. Компания была основана в 2019 году
+      и за всё это время смогла выйти в ТОП-10 агенств, предлагающих услуги продвижения в сети.
+    </p>
+    <h3 class="advantages-title">Наши преимущества</h3>
+    <ol class="advantages">
+      @for (advantage of advantages; track $index) {
+        <li class="advantage">
+          <span class="advantage-number" aria-hidden="true">{{ $index + 1 }}</span>
+          <p class="advantage-text">{{ advantage }}</p>
+        </li>
+      }
+    </ol>
+  </div>
+</section>
+
+<!-- Популярные статьи -->
+<section class="section container" id="articles">
+  <h2 class="section-title">Популярные статьи из блога</h2>
+  @if (articlesLoading()) {
+    <app-loader class="articles-loader" />
+  } @else if (topArticles().length) {
+    <div class="articles">
+      @for (article of topArticles(); track article.id) {
+        <app-article-card [article]="article" />
+      }
+    </div>
+  } @else {
+    <p class="empty">Не удалось загрузить статьи. Попробуйте обновить страницу.</p>
+  }
+  <a class="more-link" routerLink="/blog">
+    Перейти в блог
+    <span class="icon-arrow-right"></span>
+  </a>
+</section>
+
+<!-- Отзывы -->
+<section class="section container reviews" id="reviews" aria-roledescription="carousel">
+  <h2 class="section-title">Отзывы о нашей работе</h2>
+  <div class="reviews-slider" [style.--per-view]="reviewsPerView()">
+    <button type="button" class="reviews-arrow prev" aria-label="Предыдущие отзывы" (click)="prevReview()"></button>
+    <div class="reviews-viewport">
+      <div class="reviews-track" [style.--index]="reviewIndex()">
+        @for (review of reviews; track review.name) {
+          <article class="review">
+            <div class="review-header">
+              <img class="review-avatar" [src]="review.avatar" [alt]="review.name" loading="lazy" />
+              <h3 class="review-name">{{ review.name }}</h3>
+            </div>
+            <p class="review-text">{{ review.text }}</p>
+          </article>
+        }
+      </div>
+    </div>
+    <button type="button" class="reviews-arrow next" aria-label="Следующие отзывы" (click)="nextReview()"></button>
+  </div>
+</section>
+
+<!-- Контакты -->
+<section class="section container contacts" id="contacts">
+  <div class="map">
+    <iframe
+      title="АйтиШторм на карте"
+      src="https://yandex.ru/map-widget/v1/?ll=37.539285%2C55.749633&z=16&pt=37.539285%2C55.749633%2Cpm2blm"
+      allowfullscreen
+    ></iframe>
+  </div>
+  <div class="contacts-content">
+    <h2 class="section-title">Контакты</h2>
+    <div class="contacts-list">
+      <div class="contact">
+        <h3 class="contact-title">Адрес</h3>
+        <address class="contact-text">
+          Главный офис компании АйтиШторм находится по адресу {{ contacts.address }}
+        </address>
+      </div>
+      <div class="contact">
+        <h3 class="contact-title">Телефон</h3>
+        <a class="contact-text contact-link" [href]="contacts.phoneHref">{{ contacts.phone }}</a>
+      </div>
+      <div class="contact">
+        <h3 class="contact-title">Электронный адрес</h3>
+        <a class="contact-text contact-link" [href]="'mailto:' + contacts.email">{{ contacts.email }}</a>
+      </div>
+      <div class="contact">
+        <h3 class="contact-title">Мы в социальных сетях</h3>
+        <div class="socials">
+          @for (social of contacts.socials; track social.icon) {
+            <a
+              class="social"
+              [href]="social.url"
+              target="_blank"
+              rel="noopener noreferrer"
+              [attr.aria-label]="social.name"
+            >
+              <span [class]="'icon-' + social.icon"></span>
+            </a>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

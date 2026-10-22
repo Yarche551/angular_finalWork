@@ -1,0 +1,34 @@
+@use 'variables' as *;
+
+@mixin below($width) {
+  @media (max-width: $width) {
+    @content;
+  }
+}
+
+@mixin title($size: 38px) {
+  font-family: $font-title;
+  font-weight: 400;
+  font-size: $size;
+  line-height: 1.3;
+  color: $blue;
+  margin: 0;
+}
+
+@mixin section-title {
+  @include title(38px);
+
+  @include below($bp-md) {
+    font-size: 28px;
+  }
+}
+
+// Одноцветная иконка из public/images/icons, красится через color
+@mixin icon($name, $size: 24px) {
+  display: inline-block;
+  flex-shrink: 0;
+  width: $size;
+  height: $size;
+  background-color: currentColor;
+  mask: url('/images/icons/#{$name}.svg') no-repeat center / contain;
+}

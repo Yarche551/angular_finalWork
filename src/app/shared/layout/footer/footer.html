@@ -1,0 +1,54 @@
+<footer class="footer">
+  <div class="container">
+    <div class="footer-top">
+      <app-logo />
+      <nav aria-label="Меню в подвале">
+        <ul class="menu">
+          @for (item of menu; track item.title) {
+            <li>
+              <a class="menu-link" [routerLink]="item.link" [fragment]="item.fragment">{{ item.title }}</a>
+            </li>
+          }
+        </ul>
+      </nav>
+    </div>
+
+    <div class="contacts">
+      <div class="contact contact-address">
+        <div class="contact-title">Адрес</div>
+        <address class="contact-text">{{ contacts.address }}</address>
+      </div>
+      <div class="contact">
+        <div class="contact-title">Телефон</div>
+        <a class="contact-text contact-link" [href]="contacts.phoneHref">{{ contacts.phone }}</a>
+        <button type="button" class="button button-small" (click)="callMeBack()">
+          Перезвоните мне
+        </button>
+      </div>
+      <div class="contact">
+        <div class="contact-title">E-mail</div>
+        <a class="contact-text contact-link contact-email" [href]="'mailto:' + contacts.email">
+          {{ contacts.email }}
+        </a>
+      </div>
+      <div class="contact contact-socials">
+        <div class="contact-title">Мы в социальных сетях:</div>
+        <div class="socials">
+          @for (social of contacts.socials; track social.icon) {
+            <a
+              class="social"
+              [href]="social.url"
+              target="_blank"
+              rel="noopener noreferrer"
+              [attr.aria-label]="social.name"
+            >
+              <span [class]="'icon-' + social.icon"></span>
+            </a>
+          }
+        </div>
+      </div>
+    </div>
+
+    <div class="copyright">© 2022. Все права защищены</div>
+  </div>
+</footer>

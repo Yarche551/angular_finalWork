@@ -1,0 +1,136 @@
+<div class="container page">
+  @if (article(); as article) {
+    <nav class="breadcrumbs" aria-label="Хлебные крошки">
+      <a routerLink="/blog">Блог</a>
+      <span class="breadcrumbs-sep" aria-hidden="true">/</span>
+      <span class="breadcrumbs-current" aria-current="page">{{ article.title }}</span>
+    </nav>
+
+    <header class="article-header">
+      <div class="article-intro">
+        <h1 class="article-title">{{ article.title }}</h1>
+        <p class="article-description">{{ article.description }}</p>
+      </div>
+      <img class="article-image" [src]="staticPath + article.image" [alt]="article.title" />
+    </header>
+
+    <div class="article-layout">
+      <div class="article-main">
+        <!-- текст статьи приходит с backend готовой вёрсткой -->
+        <div class="article-content" [innerHTML]="article.text"></div>
+
+        <div class="share">
+          <span class="share-text">Понравилась статья? Поделитесь ею в своих социальных сетях!</span>
+          <div class="share-icons">
+            <a
+              class="share-link"
+              [href]="shareUrl('vk')"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Поделиться во ВКонтакте"
+            >
+              <span class="icon-vk"></span>
+            </a>
+            <a
+              class="share-link"
+              [href]="shareUrl('facebook')"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Поделиться в Facebook"
+            >
+              <span class="icon-facebook"></span>
+            </a>
+            <button
+              type="button"
+              class="share-link"
+              aria-label="Скопировать ссылку для Instagram"
+              (click)="shareInstagram()"
+            >
+              <span class="icon-instagram"></span>
+            </button>
+          </div>
+        </div>
+
+        <section class="comments" aria-labelledby="comments-title">
+          <h2 class="comments-title" id="comments-title">Комментарии к статье</h2>
+
+          @if (!commentsCount()) {
+            <p class="comments-note">Будьте первыми, кто оставит свой комментарий к статье!</p>
+          }
+
+          @if (authService.isLogged()) {
+            <form class="comment-form" [formGroup]="commentForm" (ngSubmit)="addComment()" novalidate>
+              <label class="visually-hidden" for="comment-text">Ваш комментарий</label>
+              <textarea
+                id="comment-text"
+                class="input comment-textarea"
+                formControlName="text"
+                placeholder="Напишите Ваш комментарий к статье..."
+                [class.invalid]="commentControl.invalid && commentControl.touched"
+              ></textarea>
+              @if (commentControl.invalid && commentControl.touched) {
+                <span class="field-error">
+                  @if (commentControl.errors?.['maxlength']) {
+                    Комментарий не должен быть длиннее 1000 символов
+                  } @else {
+                    Напишите текст комментария
+                  }
+                </span>
+              }
+              <button type="submit" class="button comment-submit" [disabled]="sending()">
+                Опубликовать комментарий
+              </button>
+            </form>
+          } @else {
+            <p class="comments-note">
+              Чтобы оставлять комментарии,
+              <a class="link" routerLink="/login" [queryParams]="{ returnUrl: returnUrl() }">войдите</a>
+              или
+              <a class="link" routerLink="/signup" [queryParams]="{ returnUrl: returnUrl() }">зарегистрируйтесь</a>.
+            </p>
+          }
+
+          @if (comments().length) {
+            <div class="comments-list">
+              @for (comment of comments(); track comment.id) {
+                <app-comment
+                  [comment]="comment"
+                  [userAction]="userActions()[comment.id] ?? null"
+                  (action)="applyAction(comment, $event)"
+                />
+              }
+            </div>
+          }
+
+          @if (commentsLoading()) {
+            <app-loader class="comments-loader" [size]="48" />
+          } @else if (hasMoreComments()) {
+            <button type="button" class="more-comments" (click)="loadMoreComments()">
+              Загрузить ещё комментарии
+              <span class="icon-arrow-down"></span>
+            </button>
+          }
+        </section>
+      </div>
+
+      @if (related().length) {
+        <aside class="related" aria-labelledby="related-title">
+          <h2 class="related-title" id="related-title">Читайте также:</h2>
+          <div class="related-list">
+            @for (item of related(); track item.id) {
+              <app-article-card [article]="item" />
+            }
+          </div>
+        </aside>
+      }
+    </div>
+  } @else if (loading()) {
+    <app-loader class="page-loader" />
+  } @else if (notFound()) {
+    <div class="not-found">
+      <h1 class="article-title">Статья не найдена</h1>
+      <p>Возможно, она была удалена или адрес указан неверно.</p>
+      <a class="button" routerLink="/blog">Перейти в блог</a>
+    </div>
+  }
+</div>
